@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-primary: #00d1b2;
+  --color-secondary: #7c4dff;
+  --color-tertiary: #7c4dff;
+  --color-neutral: #121212;
+  --color-surface: #1a1a1a;
+  --color-surface-muted: #232323;
+  --color-text: #f3f4f6;
+  --color-text-muted: #c7c9d1;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-neutral);
+  color: var(--color-text);
+}
+
+.brand-outline {
+  font-family: var(--font-outline), sans-serif;
+  letter-spacing: 0.04em;
+  font-weight: 700;
+}
+
+.title-outfit {
+  font-family: var(--font-outline), sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/*
+  Reserved for future reveal/parallax animations.
+  You can attach specific animation classes later (e.g. fade-in, slide-up)
+  without changing layout semantics.
+*/
+[data-animate='slot'] {
+  will-change: transform, opacity;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.section-animate {
+  opacity: 0;
+  animation-name: fade-up;
+  animation-duration: 700ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  animation-fill-mode: forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section-animate {
+    opacity: 1;
+    animation: none;
+  }
+}
