@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter, Outfit } from 'next/font/google'
 import './globals.css'
+import PageMotion from '@/components/PageMotion'
 
 const inter = Inter({ subsets: ['latin'] })
 const outline = Outfit({
@@ -22,7 +23,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pl">
-      <body className={`${inter.className} ${outline.variable}`}>{children}</body>
+      <body className={`${inter.className} ${outline.variable}`}>
+        <PageMotion />
+        {children}
+      </body>
     </html>
   )
 }

@@ -39,7 +39,10 @@ export default function Home() {
         </div>
       </header>
 
-      <section className="mx-auto grid w-full max-w-6xl gap-8 px-4 pb-12 pt-10 sm:px-6 lg:grid-cols-2 lg:items-center lg:gap-12 lg:px-8 lg:pt-14">
+      <section
+        className="mx-auto grid w-full max-w-6xl gap-8 px-4 pb-12 pt-10 sm:px-6 lg:grid-cols-2 lg:items-center lg:gap-12 lg:px-8 lg:pt-14"
+        data-parallax="soft"
+      >
         <div
           className="section-animate rounded-3xl border border-[var(--color-secondary)]/40 bg-[var(--color-surface)] p-6 sm:p-8"
           data-animate="slot"
@@ -55,8 +58,11 @@ export default function Home() {
           <HeroFeatureBadges items={heroFeatures} />
         </div>
 
-        <div className="section-animate mx-auto w-full max-w-sm" data-animate="slot" style={{ animationDelay: '200ms' }}>
-          <div className="relative rounded-[2.6rem] border-2 border-[var(--color-secondary)] bg-black p-2 shadow-[0_0_0_1px_rgba(255,255,255,0.08),0_0_26px_rgba(0,209,178,0.38)]">
+        <div className="section-animate mx-auto w-full max-w-sm" data-animate="slot">
+          <div
+            className="relative rounded-[2.6rem] border-2 border-[var(--color-secondary)] bg-black p-2 shadow-[0_0_0_1px_rgba(255,255,255,0.08),0_0_26px_rgba(0,209,178,0.38)]"
+            data-float="hero-device"
+          >
             <div className="relative aspect-[9/19] overflow-hidden rounded-[2.1rem] border border-white/10 bg-[var(--color-surface)] p-3">
               <span className="absolute left-1/2 top-2 z-10 h-1.5 w-16 -translate-x-1/2 rounded-full bg-white/30" />
               <HeroScreenshotCarousel slides={heroScreenshotSlides} />
@@ -67,7 +73,9 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <FeatureCarousel cards={featureCarouselContent.cards} subTitle={featureCarouselContent.subTitle} title={featureCarouselContent.title} />
+      <div data-animate="slot" data-parallax="soft">
+        <FeatureCarousel cards={featureCarouselContent.cards} subTitle={featureCarouselContent.subTitle} title={featureCarouselContent.title} />
+      </div>
 
       <section className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 lg:px-8" id="pobierz">
         <div

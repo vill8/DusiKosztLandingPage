@@ -14,7 +14,7 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
 }
 
 body {
@@ -34,37 +34,29 @@ body {
   letter-spacing: -0.01em;
 }
 
-/*
-  Reserved for future reveal/parallax animations.
-  You can attach specific animation classes later (e.g. fade-in, slide-up)
-  without changing layout semantics.
-*/
-[data-animate='slot'] {
+.section-animate {
+  transform: translateZ(0);
+}
+
+.feature-carousel-scroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.feature-carousel-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+[data-animate='slot'],
+[data-parallax],
+[data-float] {
   will-change: transform, opacity;
 }
 
-@keyframes fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.section-animate {
-  opacity: 0;
-  animation-name: fade-up;
-  animation-duration: 700ms;
-  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-  animation-fill-mode: forwards;
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .section-animate {
-    opacity: 1;
-    animation: none;
+  [data-animate='slot'],
+  [data-parallax],
+  [data-float] {
+    will-change: auto;
   }
 }
