@@ -11,6 +11,7 @@ type HeroScreenshotCarouselProps = {
 
 export default function HeroScreenshotCarousel({ slides }: HeroScreenshotCarouselProps) {
   const trackRef = useRef<HTMLDivElement>(null)
+  const activePointerIdRef = useRef<number | null>(null)
   const dragRef = useRef({
     active: false,
     startX: 0,
@@ -47,6 +48,15 @@ export default function HeroScreenshotCarousel({ slides }: HeroScreenshotCarouse
     }
   }, [])
 
+  useEffect(() => {
+    const stopOnWindowBlur = () => endDragging()
+    window.addEventListener('blur', stopOnWindowBlur)
+
+    return () => {
+      window.removeEventListener('blur', stopOnWindowBlur)
+    }
+  }, [])
+
   const scrollBySlide = (direction: -1 | 1) => {
     const element = trackRef.current
     if (!element) return
@@ -62,6 +72,38 @@ export default function HeroScreenshotCarousel({ slides }: HeroScreenshotCarouse
     })
   }
 
+  const snapToNearestSlide = () => {
+    const element = trackRef.current
+    if (!element) return
+
+    const firstSlide = element.firstElementChild as HTMLElement | null
+    const styles = window.getComputedStyle(element)
+    const gap = Number.parseFloat(styles.columnGap || styles.gap || '0') || 0
+    const step = (firstSlide?.clientWidth ?? element.clientWidth) + gap
+    if (step <= 0) return
+
+    const targetIndex = Math.round(element.scrollLeft / step)
+    element.scrollTo({
+      left: targetIndex * step,
+      behavior: 'smooth',
+    })
+  }
+
+  const endDragging = (pointerId?: number) => {
+    if (!dragRef.current.active) return
+
+    const element = trackRef.current
+    dragRef.current.active = false
+    activePointerIdRef.current = null
+    setIsDragging(false)
+
+    if (element && typeof pointerId === 'number' && element.hasPointerCapture(pointerId)) {
+      element.releasePointerCapture(pointerId)
+    }
+
+    snapToNearestSlide()
+  }
+
   const onPointerDown = (event: PointerEvent<HTMLDivElement>) => {
     if (event.pointerType !== 'mouse' && event.pointerType !== 'pen') return
     if (event.button !== 0) return
@@ -74,11 +116,13 @@ export default function HeroScreenshotCarousel({ slides }: HeroScreenshotCarouse
       startX: event.clientX,
       startScrollLeft: element.scrollLeft,
     }
+    activePointerIdRef.current = event.pointerId
     setIsDragging(true)
     element.setPointerCapture(event.pointerId)
   }
 
   const onPointerMove = (event: PointerEvent<HTMLDivElement>) => {
+    if (activePointerIdRef.current !== event.pointerId) return
     if (!dragRef.current.active) return
     const element = trackRef.current
     if (!element) return
@@ -88,25 +132,25 @@ export default function HeroScreenshotCarousel({ slides }: HeroScreenshotCarouse
   }
 
   const stopDragging = (event: PointerEvent<HTMLDivElement>) => {
-    if (!dragRef.current.active) return
-    dragRef.current.active = false
-    setIsDragging(false)
-    trackRef.current?.releasePointerCapture(event.pointerId)
+    if (activePointerIdRef.current !== event.pointerId) return
+    endDragging(event.pointerId)
   }
 
   return (
     <div className="relative h-full rounded-[1.6rem]">
       <div
         aria-label="Galeria screenshotow aplikacji"
-        className={`flex h-full snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth rounded-[1.6rem] touch-pan-x ${
-          isDragging ? 'cursor-grabbing' : 'cursor-grab'
-        }`}
+        className={`flex h-full snap-x gap-3 overflow-x-auto scroll-smooth rounded-[1.6rem] touch-pan-x overscroll-x-contain ${
+          isDragging ? 'snap-none cursor-grabbing' : 'snap-mandatory cursor-grab'
+        } ${canScrollLeft || canScrollRight ? '' : 'snap-none'}`}
         onPointerCancel={stopDragging}
         onPointerDown={onPointerDown}
+        onPointerLeave={stopDragging}
+        onLostPointerCapture={() => endDragging()}
         onPointerMove={onPointerMove}
         onPointerUp={stopDragging}
         ref={trackRef}
-        style={{ scrollbarWidth: 'none' }}
+        style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}
       >
         {slides.map((slide) => (
           <div
@@ -116,7 +160,7 @@ export default function HeroScreenshotCarousel({ slides }: HeroScreenshotCarouse
             {slide.imageSrc ? (
               <Image
                 alt={slide.label}
-                className="pointer-events-none object-cover object-top"
+                className="pointer-events-none scale-[1.03] object-cover object-top"
                 draggable={false}
                 fill
                 priority={slide.id === '01'}

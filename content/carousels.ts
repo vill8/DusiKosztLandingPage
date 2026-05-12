@@ -47,5 +47,11 @@ export const featureCarouselContent = {
       subHeader: 'Budżet i analiza',
       text: 'Ustaw swój budżet na przyjemności a potem sprawdź analizę swoich wydatków. Okiełznaj swoje wydatki ;).',
     },
+    {
+      id: 'feature-5',
+      header: 'Usługi',
+      subHeader: 'Dodaj wszystko co chcesz',
+      text: 'Nie widzisz na liście usługi której potrzebujesz? Rachnuek za internet, telefon? Dodaj własne usługi i zarządzaj nimi w jednym miejscu.',
+    }
   ] satisfies FeatureCarouselCard[],
 }

@@ -110,7 +110,7 @@ export default function Home() {
         >
           <h2 className="mb-3 text-2xl font-semibold sm:text-3xl">Kontakt</h2>
           <p className="mb-5 text-[var(--color-text-muted)]">
-            Masz pytania, pomysl na funkcje albo chcesz wspolpracowac? Wyslij wiadomosc przez formularz.
+            Masz pytania, pomysł na funkcje albo chcesz współpracować? Wyślij wiadomość przez formularz.
           </p>
           <form action="mailto:vill895@gmail.com" className="grid gap-4" encType="text/plain" method="post">
             <div className="grid gap-4 sm:grid-cols-2">
@@ -149,9 +149,9 @@ export default function Home() {
                 className="rounded-full bg-[var(--color-primary)] px-6 py-3 font-semibold text-[var(--color-neutral)] transition-transform hover:-translate-y-0.5"
                 type="submit"
               >
-                Wyslij wiadomosc
+                Wyślij wiadomość
               </button>
-              <p className="text-xs text-[var(--color-text-muted)]">Po kliknieciu otworzy sie Twoj domyslny klient pocztowy.</p>
+              <p className="text-xs text-[var(--color-text-muted)]">Po kliknięciu otworzy się Twój domyślny klient pocztowy.</p>
             </div>
           </form>
         </div>
@@ -166,7 +166,7 @@ export default function Home() {
               rel="noopener noreferrer"
               target="_blank"
             >
-              Polityka prywatnosci
+              Polityka prywatności
             </a>
             <a className="transition-colors hover:text-[var(--color-primary)]" href="#kontakt">
               Kontakt
